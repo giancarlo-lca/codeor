@@ -1,0 +1,65 @@
+{% load widget_tweaks %}
+
+<form method="post" action="">
+  {% csrf_token %}
+
+  <div class="modal-header">
+    <h3 class="modal-title">{{ titulo_form }} PLANEJAMENTO</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label class="control-label">Valor</label>
+      {% render_field form.valor class="form-control" %}
+      <div class="{% if form.valor.errors %} invalid {% endif %}" style="color:red">
+        {% for error in form.valor.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    </div>
+   
+    <div class="form-group col-md-6">
+      <label class="control-label">Status</label>
+      {% render_field form.status class="form-control" %}
+      <div class="{% if form.status.errors %} invalid {% endif %}" style="color:red">
+        {% for error in form.status.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label class="control-label">Item</label>
+      {% render_field form.item class="form-control" %}
+      <div class="{% if form.item.errors %} invalid {% endif %}" style="color:red">
+        {% for error in form.item.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>      
+    </div>
+
+  </div>
+
+  </div>
+
+  <div class="modal-footer">
+    {% if titulo_form == "CRIAR" %}
+      <button type="button" class="submit-btn btn btn-primary">Adicionar</button>
+    {% else %}
+      <button type="button" class="submit-btn btn btn-primary">Alterar</button>
+    {% endif %}
+  </div>
+
+</form>

@@ -1,0 +1,119 @@
+<style>
+    .main-sidebar{
+        grid-area: menu;
+        /* background: linear-gradient(to right, #232526, #414345); */
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        background-color: #222d32;
+    }
+
+    .panel-image {
+        /* position: relative; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 15px 0 15px 0;
+    }
+
+    .panel-image > .image > img {
+        width: 100%;
+        max-width: 70px;
+        height: auto;
+    }
+
+    .sidebar-menu {
+        padding: 0;
+
+    }
+
+    .sidebar-menu > li.menu-header {
+        color: #2b85ad;
+        background: #1a2226;
+
+        padding: 10px 25px 10px 15px;
+        font-size: 12px;
+    }
+
+    .sidebar-menu li.menu-header {
+        padding: 10px 25px 10px 15px;
+        font-size: 12px;
+    }
+
+    .sidebar-menu a {
+        color: #b8c7ce;
+    }
+
+    .sidebar-menu > li > a {
+        border-left: 3px solid transparent;
+        padding: 12px 5px 12px 15px;
+        display: block;
+    }
+
+    .sidebar-menu > li > a > .fa {
+         width: 20px;
+    }
+
+    .sidebar-menu > li:hover > a {
+        color: #fff;
+        background: #1e282c;
+        border-left-color: #3c8dbc;
+    }
+
+    .sidebar a:hover {
+        text-decoration: none;
+    }
+
+
+</style>
+
+<aside class="menu main-sidebar" >
+    <div class="panel-image">
+        <div class="image">
+            <img src="http://www.pra.ufpb.br/controlerequisicoes/dist/img/LogoUFPB.png" class="rounded-circle" alt="User Image">
+        </div>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li class="menu-header">MENU</li>
+        <li>
+          <a href="{% url 'home' %}">
+            <i class="fa fa-home"></i> <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'list_celulas' %}">
+            <i class="fa fa-list"></i> <span>Listar Celulas</span>
+          </a>
+        </li>
+        <li>
+            <a href="{% url 'itens_planejados' %}">
+              <i class="fa fa-list"></i> <span>Listar itens</span>
+            </a>
+          </li>
+      </ul>
+
+      {% if user.is_staff %}
+        <ul class="sidebar-menu">
+            <li class="menu-header">MENU ADMIN</li>
+            <li>
+            <a href="{% url 'upload-csv' %}">
+                <i class="fa fa-download"></i> <span>Importar Arquivo CSV</span>
+            </a>
+            </li>
+        </ul>
+      {% endif %}
+
+  <!-- <div class="menu-filter">
+      <i class="fa fa-search fa-lg"></i>
+      <input type="text" placeholder="Digite para filtrar..."
+          class="filter-field">
+  </div>
+  <ul>
+      {% if user.is_staff %}
+          <li> <a href="{% url 'upload-csv' %}">Importar arquivo CSV</a></li>
+      {% endif %}
+      <li> <a href="{% url 'list_celulas' %}">Listar Celulas</a></li>
+  </ul> -->
+  
+</aside>

@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    {% include 'menu.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="planejamento">
+        {% include 'pageTitle.html' with icon="fa fa-calculator" titulo="Planejamento" subtitulo=celula.pi.descricao %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <li class="message {{ message.tags }} list-unstyled d-none">{{ message }}</li>
+            {% endfor %}
+        
+        {% endif %}
+
+        <div class="detalhe mb-3">
+            {% if user.is_staff %}
+                <a class="btn btn-secondary" href="{% url 'list_celulas_get' celula.pi.id %}">Voltar para Lsita de Celulas</a>
+            {% else %}
+            <a class="btn btn-secondary" href="{% url 'list_celulas' %}">Voltar para Lsita de Celulas</a>
+            {% endif %}
+            <button class="btn btn-info ms-3" type="button" data-toggle="collapse" data-target="#collapse-show-hide" aria-expanded="false" aria-controls="collapse-show-hide" style="background-color: #b0c4de;">
+              Detalhes
+            </button>
+
+            <div class="collapse" id="collapse-show-hide">
+                <div class="informacoes mt-3" style="padding: 20px; background: lightsteelblue; border-radius: 20px;">
+                    <div class="row mb-3">
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Natureza de Despesas</label>
+                                <input type="text" class="form-control" value="{{ celula.natureza.codigo }} - {{ celula.descricao_ }}" readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Pi</label>
+                            <input type="text" class="form-control" value="{{ celula.pi.codigo }} - {{ celula.pi.descricao }}" readonly>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Ptres</label>
+                            <input type="text" class="form-control" value="{{ celula.ptres.codigo }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="form-group col-md-6">
+                            <label class="control-label">UG Responsável</label>
+                            <input type="text" class="form-control" value="{{ celula.ugresp.codigo }} - {{ celula.ugresp.descricao }}" readonly>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">UG Executora</label>
+                            <input type="text" class="form-control" value="{{ celula.ugex.codigo }} - {{ celula.ugex.descricao }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Fonte de Recursos</label>
+                            <input type="text" class="form-control" value="{{ celula.fonte.codigo }} - {{ celula.fonte.descricao }}" readonly>
+                        </div>
+                      </div>
+                    <div class="row mb-3">
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Crédito Detalhado</label>
+                            <input type="text" class="form-control" value="{{ celula.dotacao }}" readonly>
+                            
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Crédito Disponível</label>
+                            <input type="text" class="form-control" value="{{ celula.credito }}" readonly>
+                            
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Despesas Empenhadas</label>
+                            <input type="text" class="form-control" value="{{ celula.despesasEmp }}" readonly>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class="control-label">Despesas Pagas</label>
+                            <input type="text" class="form-control" value="{{ celula.despesasPagas}}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <span><h2>Total Planejado: {{ celula.total_planejado }}</h2></span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="create-plamenjamento" class="btn btn-primary mb-2" type="button" name="button"><span class="fa fa-plus"></span> Planejamento</button>
+
+        <div class="list-planejameto p-3" style="background: #fff;">
+            <table class="display compact" id="table_planejamento">
+                <thead>
+                    <tr>
+                      <th>ITEM</th>
+                      <th>STATUS</th>
+                      <th>VALOR</th>
+                      <th>AÇÕES</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for p in object_list %}
+                    <tr>
+                        <td>{{ p.item }}</td>
+                        <td>{{ p.status }}</td>
+                        <td>{{ p.valor }}</td>
+                        <td>
+                            <button type ="button" id="edit-celula" class="bs-modal btn btn-warning" data-form-url="{% url 'edit_planejamento' p.celula.pi.id p.celula.id p.id %}">
+                                <i class="fa fa-pencil"></i>    
+                            <!-- </button> | Inativar -->
+                        </td>
+                    </tr>
+                    
+                  {% endfor %}
+
+                  </tbody>
+                
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal 1 with id="create-plamenjanemto"-->
+    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+    
+     <!-- Modal 2 with id="modal" Edit e Inativar -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+        $(document).ready(function() {
+           
+            $('#table_planejamento').DataTable({
+                "order": [[ 0, "asc" ]],
+                "language": {
+                    "lengthMenu": "Mostre _MENU_ itens por página",
+                    "zeroRecords": "Nenhum dado encontrado",
+                    "search": "Procurar por:",
+                    "info": "Mostrando de _START_ a _END_ de _TOTAL_ itens",
+                }
+            });
+
+
+            $("#create-plamenjamento").modalForm({
+                formURL: "{% url 'create_planejamento' celula.pi.id celula.id %}",
+                modalID: "#create-modal"
+            });
+
+            $(".bs-modal").each(function () {
+                 $(this).modalForm({
+                    formURL: $(this).data('form-url')
+                });
+             });
+
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            if ($(".message").length){
+
+                msg = $(".message").text();
+
+                if ($(".message.success").length)
+                    toastr.success(msg);
+                else
+                    toastr.error(msg);
+            }
+
+
+        });
+      
+    </script>
+  
+{% endblock %}

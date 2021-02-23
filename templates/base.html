@@ -1,0 +1,84 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'font/css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'toastr/css/toastr.min.css' %}">
+
+    {% if user.is_authenticated %}
+        <link rel="stylesheet" href="{% static 'bootstrap/css/styles/base_styles.css' %}">
+    {% else %}
+        <link rel="stylesheet" href="{% static 'bootstrap/css/styles/auth.css' %}">
+    {% endif %}
+    
+    <title>{% block title %} {% endblock %}</title>
+    <style>
+        #table_celulas_filter{
+            margin-bottom: 20px;
+        }
+
+        #table_celulas_filter input, #table_celulas_length select {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+        {% include 'header.html' %}
+
+        {% block menu %} {% endblock %}
+
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+        
+        {% include 'footer.html' %}
+    </div>
+</body>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> -->
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
+    <script src="{% static 'toastr/js/toastr.min.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+        //var app = document.getElementById("app");
+       
+        $(".toggle").on("click", function(){
+            if($(".menu").is(":visible")){
+                $(".menu").hide()
+                $("#app").addClass("hide-menu")
+                $("#toggle-header").removeClass("fa-angle-left") 
+                $("#toggle-header").addClass("fa-angle-down") 
+                               
+            }else{
+                $(".menu").show()
+                 // remove a class
+                $("#app").removeClass("hide-menu")
+                $("#toggle-header").removeClass("fa-angle-down") 
+                $("#toggle-header").addClass("fa-angle-left") 
+            }
+            return false;
+        });
+        
+    })
+</script>
+
+{% block script %} {% endblock %}
+</html>

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+
+{% block content %} 
+    <div class="content">
+    <div class="auth-content">
+        <div class="auth-modal">
+            <div class="logo-sistema">
+                <img src="https://security.ufpb.br/ccae/contents/imagens/logo-1.png/@@images/404ebd16-a7a4-4424-abd5-1bb73ad04ce3.png" alt=""
+                    style="width: 70px; height: auto;"> <span> CODEOR </span>
+            </div>
+            
+            <hr>
+            <div class="auth-title">Login</div>
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="id_username">Usuário</label>
+                    <input type="text" class="form-control" name="username" autofocus="" 
+                        autocapitalize="none" autocomplete="username" maxlength="150" 
+                        required="" id="id_username" style="display: initial;">
+                    
+                  </div>
+                  <div class="form-group">
+                    <label for="id_password">Senha</label>
+                    <input type="password" class="form-control" name="password" autocomplete="current-password"
+                        required="" id="id_password" style="display: initial;">
+                  </div>
+
+                <button type="submit">Login</button>
+            </form>
+            
+            <div class="reset" style="width: 350px; padding: 20px 35px 0 35px;">
+                <a href="{% url 'password_reset' %}">
+                    <span>Esqueceu a senha? Resete sua senha aqui!</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    </div>
+{% endblock %}

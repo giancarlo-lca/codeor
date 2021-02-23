@@ -1,0 +1,183 @@
+{% load widget_tweaks %}
+
+<form method="post" action="">
+  {% csrf_token %}
+
+  <div class="modal-header">
+    <h3 class="modal-title">Alterar Descrição da Celula</h3>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+
+    <div class="row mb-2">
+      <div class="form-group col-md-6">
+          <label class="control-label">Pi</label>
+          <input type="text" class="form-control" value="{{ celula.pi.codigo }} - {{ celula.pi.descricao }}" readonly>
+      </div>
+      <div class="form-group col-md-6">
+          <label class="control-label">Ptres</label>
+          <input type="text" class="form-control" value="{{ celula.ptres.codigo }}" readonly>
+      </div>
+  </div>
+
+  <div class="row mb-2">
+      <div class="form-group col-md-6">
+          <label class="control-label">UG Responsável</label>
+          <input type="text" class="form-control" value="{{ celula.ugresp.codigo }} - {{ celula.ugresp.descricao }}" readonly>
+      </div>
+      <div class="form-group col-md-6">
+          <label class="control-label">UG Executora</label>
+          <input type="text" class="form-control" value="{{ celula.ugex.codigo }} - {{ celula.ugex.descricao }}" readonly>
+      </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="form-group col-md-12">
+        <label class="control-label">Fonte de Recursos</label>
+        <input type="text" class="form-control" value="{{ celula.fonte.codigo }} - {{ celula.fonte.descricao }}" readonly>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+      <div class="form-group col-md-3">
+          <label class="control-label">Crédito Detalhado</label>
+          <input type="text" class="form-control" value="{{ celula.dotacao }}" readonly>
+          
+      </div>
+      <div class="form-group col-md-3">
+          <label class="control-label">Crédito disponível</label>
+          <input type="text" class="form-control" value="{{ celula.credito }}" readonly>
+          
+      </div>
+      <div class="form-group col-md-3">
+          <label class="control-label">Despesas Empenhadas</label>
+          <input type="text" class="form-control" value="{{ celula.despesasEmp }}" readonly>
+      </div>
+      <div class="form-group col-md-3">
+          <label class="control-label">Despesas Pagas</label>
+          <input type="text" class="form-control" value="{{ celula.despesasPagas }}" readonly>
+      </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label class="control-label">Natureza de Despesas</label>
+      <input type="text" class="form-control" value="{{ celula.natureza.codigo }} - {{ celula.natureza.descricao }}" readonly>
+    </div>
+   
+    <div class="form-group col-md-6">
+      <label class="control-label">Descrição</label>
+      {% render_field form.descricao class="form-control" %}
+      
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-12">
+      <label class="control-label">Observação</label>
+      {% render_field form.observacao class="form-control" rows="3" %}
+    </div>
+
+  </div>
+
+    {% for field in form %}
+      {% if field.name != 'descricao' and field.name != 'observacao' %}
+        <div class="form-group d-none">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% render_field field class="form-control" placeholder=field.label %}
+
+          
+          <div class="{% if field.errors %} invalid {% endif %}" style="color:red">
+            {% for error in field.errors %}
+              <p class="help-block">{{ error }}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    
+
+     <!-- {% for hidden in form.hidden_fields %}
+      {% if hidden.name != 'descricao' and hidden.name != 'observacao' %}
+        <input type="hidden" name="{{ hidden.name }}" value="{{ hidden.value }}"/>
+      {% endif %}
+    {% endfor %}  -->
+
+     
+      <!-- <div class="row mb-3">
+        <div class="form-group col-md-6">
+            <label class="control-label">Pi</label>
+            <input type="text" class="form-control" value="{{ celula.pi.codigo }} - {{ celula.pi.descricao }}" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label">Ptres</label>
+            <input type="text" class="form-control" value="{{ celula.ptres.codigo }}" readonly>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="form-group col-md-6">
+            <label class="control-label">UG Responsável</label>
+            <input type="text" class="form-control" value="{{ celula.ugresp.codigo }} - {{ celula.ugresp.descricao }}" readonly>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label">UG Executora</label>
+            <input type="text" class="form-control" value="{{ celula.ugex.codigo }} - {{ celula.ugex.descricao }}" readonly>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="form-group col-md-3">
+            <label class="control-label">Dotacao</label>
+            <input type="text" class="form-control" value="{{ celula.dotacao }}" readonly>
+            
+        </div>
+        <div class="form-group col-md-3">
+            <label class="control-label">Crédito</label>
+            <input type="text" class="form-control" value="{{ celula.credito }}" readonly>
+            
+        </div>
+        <div class="form-group col-md-3">
+            <label class="control-label">Despesas Empenhadas</label>
+            <input type="text" class="form-control" value="{{ celula.despesasEmp }}" readonly>
+        </div>
+        <div class="form-group col-md-3">
+            <label class="control-label">Despesas Pagas</label>
+            <input type="text" class="form-control" value="{{ celula.despesasPagas }}" readonly>
+        </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label">Natureza de Despesas</label>
+        <input type="text" class="form-control" value="{{ celula.natureza.descricao }}" readonly>
+      </div>
+     
+      <div class="form-group col-md-6">
+        <label class="control-label">Descrição</label>
+        {% render_field form.descricao class="form-control" %}
+        
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <label class="control-label">Observação</label>
+        {% render_field form.observacao class="form-control" %}
+      </div>
+
+    </div> -->
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="submit-btn btn btn-primary">Alterar</button>
+  </div>
+
+</form>

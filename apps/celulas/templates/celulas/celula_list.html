@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    {% include 'menu.html' %}
+{% endblock %}
+
+{% block content %}
+    
+    <div class="celulas">
+        {% if user.is_staff %}
+            {% include 'pageTitle.html' with icon="fa fa-list" titulo="Lista de Celulas" subtitulo=pi_descricao %}
+       
+            <div class="input-group" style="margin: 10px 0 20px 0; width: 50%;">
+                    <select class="custom-select" name="select_pi" id="select_pi_id">
+                        
+                        {% for pi in PI %}
+                            {% if pi.id == pi_id %}
+                            <option selected value="{{ pi.id }}">{{ pi.descricao }} -  {{ pi.codigo }}</option>
+                            {% else %}
+                                <option value="{{ pi.id }}">{{ pi.descricao }} -  {{ pi.codigo }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" id="selec-button" >Atualizar</button>
+                    </div>
+               
+            </div>
+        
+        {% else %}
+            {% include 'pageTitle.html' with icon="fa fa-list" titulo="Lista de Celulas" subtitulo=user.funcionario.pi.descricao %}
+        {% endif %} 
+        
+        {% if messages %}
+            {% for message in messages %}
+                <li class="message {{ message.tags }} list-unstyled d-none">{{ message }}</li>
+            {% endfor %}
+        {% endif %}
+        <div class="list-celulas p-3" style="background: #fff;">
+            <table class="display compact" id="table_celulas">
+                <thead>
+                  <tr>
+                    <!-- <th>#</th> -->
+                    <th>DESCRIÇÃO</th>
+                    <th>CRÉDITO DETALHADO</th>
+                   
+
+                    <th>DESPESAS EMP.</th>
+                    <th style="background: aquamarine;">PLANEJADO</th>
+                    <th>AÇÕES</th>
+                    <th>CRÉDITO DISPOSNÍVEL</th>
+                    <th>DESPESAS PAGAS</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  {% for celula in object_list %}
+                    <tr>
+                        <!-- <td>{{ celula.id }}</td> -->
+                       
+                        <td>{{ celula.descricao_ }}</td>
+                       
+                        <td>{{ celula.dotacao }}</td>
+                        
+                        <td>{{ celula.despesasEmp }}</td>
+                        <td style="background: aquamarine;">{{ celula.total_planejado }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-info" href="{% url 'list_planejamento' celula.pi.id celula.id %}">
+                                <span class="fa fa-plus"></span>
+                            </a>
+
+                            <button type="button" id="edit-celula" class="bs-modal btn btn-sm btn-primary pl-2" data-form-url="{% url 'edit_celula' celula.id %}">
+                                <span class="fa fa-pencil"></span>
+                              </button>
+
+                            <!-- <a class="btn btn-info" href="#">
+                                <i class="fa fa-plus"></i>
+                            </a> -->
+                        </td>
+                        <td>{{ celula.credito }}</td>
+                        <td>{{ celula.despesasPagas }}</td>
+                       
+                    </tr>
+                    
+                  {% endfor %}
+                  
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    <!-- Modal 2 with id="modal" -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document" style="max-width: 900px;">
+        <div class="modal-content"></div>
+        </div>
+    </div>
+
+{% endblock %}
+    
+{% block script %}
+
+    <script>
+        $(document).ready(function() {
+            $('#table_celulas').DataTable({
+                "order": [[ 0, "asc" ]],
+                "language": {
+                    "lengthMenu": "Mostre _MENU_ itens por página",
+                    "zeroRecords": "Nenhum dado encontrado",
+                    "search": "Procurar por:",
+                    "info": "Mostrando de _START_ a _END_ de _TOTAL_ itens",
+                }
+            });
+
+            $("#selec-button").on('click',function(){
+                pi_id = $("#select_pi_id").val()
+                url = "{% url 'list_celulas_get' 1 %}"
+                url = url.replace('1', pi_id);
+                //alert(url)
+                window.location.href = url
+            });
+
+            $(".bs-modal").each(function () {
+                 $(this).modalForm({
+                    formURL: $(this).data('form-url')
+                });
+             });
+
+             toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            if ($(".message").length){
+
+                msg = $(".message").text();
+
+                if ($(".message.success").length)
+                    toastr.success(msg);
+                else
+                    toastr.error(msg);
+            }
+
+        });
+      
+    </script>
+  
+{% endblock %}
+

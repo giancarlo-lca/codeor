@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block menu %}
+    {% include 'menu.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="planejamento">
+        {% if user.is_staff %}
+            {% include 'pageTitle.html' with icon="fa fa-list" titulo="Itens Planejados" subtitulo=pi_descricao %}
+        {% else %}
+            {% include 'pageTitle.html' with icon="fa fa-list" titulo="Itens Planejados" subtitulo=user.funcionario.pi.descricao %}
+        {% endif %}
+
+        {% if user.is_staff %}
+            <div class="input-group" style="margin: 10px 0 20px 0; width: 50%;">
+                <select class="custom-select" name="select_pi" id="select_pi_id">
+                    
+                    {% for pi in PI %}
+                        {% if pi.id == pi_id %}
+                        <option selected value="{{ pi.id }}">{{ pi.descricao }} -  {{ pi.codigo }}</option>
+                        {% else %}
+                            <option value="{{ pi.id }}">{{ pi.descricao }} -  {{ pi.codigo }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="selec-button" >Atualizar</button>
+                </div>
+        
+            </div>
+        {% endif %}
+
+        <div class="list-planejameto p-3" style="background: #fff;">
+            <table class="display compact" id="itens-planejados">
+                <thead>
+                    <tr>
+                      <!-- <th>#celulaID</th>   -->
+                      <th>ITEM</th>
+                      <th>STATUS</th>
+                      <th>CELULA</th>
+                      <th>VALOR</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for p in object_list %}
+                    <tr>
+                        <!-- <td>{{ p.celula.id }}</td> -->
+                        <td>{{ p.item }}</td>
+                        <td>{{ p.status }}</td>
+                        <td>{{ p.celula.descricao_ }}</td>
+                        <td>{{ p.valor }}</td>
+                    </tr>
+                    
+                  {% endfor %}
+
+                  </tbody>
+                
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script>
+        $(document).ready(function() {
+           
+            $('#itens-planejados').DataTable({
+                "order": [[ 2, "asc" ]],
+                "language": {
+                    "lengthMenu": "Mostre _MENU_ itens por página",
+                    "zeroRecords": "Nenhum dado encontrado",
+                    "search": "Procurar por:",
+                    "info": "Mostrando de _START_ a _END_ de _TOTAL_ itens",
+                }
+            });
+
+            $("#selec-button").on('click',function(){
+                pi_id = $("#select_pi_id").val()
+                url = "{% url 'itens_planejados_get_pi' 1 %}"
+                url = url.replace('1', pi_id);
+                //alert(url)
+                window.location.href = url
+            });
+
+        });
+      
+    </script>
+  
+{% endblock %}

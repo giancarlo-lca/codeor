@@ -1,0 +1,265 @@
+* {
+    font-family: "Lato", sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+.content {
+    grid-area: content;
+    background-color: #efefef;
+    padding: 20px;
+}
+
+
+#app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 60px 1fr 40px;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas:
+        "header header"
+        "menu content"
+        "menu footer";
+}
+
+#app.hide-menu {
+    grid-template-areas:
+        "header header"
+        "content content"
+        "footer footer";
+}
+
+
+.header {
+grid-area: header;
+background: linear-gradient(to right, #1e469a, #49a7c1);
+
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.title {
+font-size: 1.2em;
+color: #fff;
+font-weight: 100;
+flex-grow: 1;
+text-align: center;
+}
+
+.title a {
+color: #fff;
+text-decoration: none;
+}
+
+.title a:hover {
+color: #fff;
+text-decoration: none;
+}
+
+header.header > a.toggle {
+width: 60px;
+height: 100%;
+color: #fff;
+justify-self: flex-start;
+text-decoration: none;
+
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+header.header > a.toggle:hover {
+background: rgba(0, 0, 0, 0.2);
+color: #fff;
+}
+
+.menu {
+grid-area: menu;
+background: linear-gradient(to right, #232526, #414345);
+
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+}
+
+.menu a,
+.menu a:hover {
+color: #fff;
+text-decoration: none;
+}
+
+.menu .tree-node.selected > .tree-content,
+.menu .tree-node .tree-content:hover {
+background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tree-arrow.has-child {
+filter: brightness(2);
+}
+
+.menu .menu-filter {
+display: flex;
+justify-content: center;
+align-items: center;
+
+margin: 20px;
+padding-bottom: 8px;
+border-bottom: 1px solid #AAA;
+}
+
+.menu .menu-filter i {
+color: #AAA;
+margin-right: 10px;
+}
+
+.menu input {
+color: #CCC;
+font-size: 1.3rem;
+border: 0;
+outline: 0;
+width: 100%;
+background: transparent;
+}
+
+.tree-filter-empty {
+color: #CCC;
+font-size: 1.3rem;
+margin-left: 20px;
+}
+
+.footer {
+grid-area: footer;
+background-color: #DDD;
+color: #333;
+
+display: flex;
+justify-content: flex-end;
+align-items: center;
+padding-right: 10px;
+}
+
+.user-dropdown {
+    position: relative;
+    height: 100%;
+}
+
+.user-button {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-weight: 100;
+    height: 100%;
+    padding: 0px 20px;
+}
+
+.user-dropdown:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.user-dropdown-img {
+    margin: 0px 10px;
+}
+
+.user-dropdown-img > img {
+    max-height: 37px;
+    border-radius: 5px;
+}
+
+.user-dropdown-content {
+    position: absolute;
+    right: 0px;
+    background-color: #f9f9f9;
+    min-width: 170px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 10px;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+.user-dropdown:hover .user-dropdown-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+.user-dropdown-content a {
+    text-decoration: none;
+    color: #000;
+    padding: 10px;
+}
+
+.user-dropdown-content a:hover {
+    text-decoration: none;
+    color: #000;
+    background-color: #EDEDED;
+}
+
+.page-title h1 {
+    margin: 0;
+}
+
+.page-title h2 {
+    color: #777;
+    margin-top: 5px;
+    font-size: 1.3rem;
+}
+
+
+/* teste menu 
+
+.sidebar-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar-menu > li.header-menu {
+    color: #2b85ad;
+    background: #1a2226;
+}
+
+.sidebar-menu > li > a {
+    border-left: 3px solid transparent;
+}
+
+.sidebar a {
+    color: #b8c7ce;
+}
+
+.sidebar-menu li > a {
+    position: relative;
+}
+.sidebar-menu > li > a {
+    padding: 12px 5px 12px 15px;
+    display: block;
+}
+
+.sidebar-menu > li >a > .fa, .sidebar-menu > li > a > .glyphicon, .sidebar-menu > li > a > .ion {
+    width: 20px;
+}
+
+*/
+
+.control-label {
+    margin-bottom: 0.5rem;
+}
+
+.formulario {
+    padding: 20px;
+    /* background-color: #292b2d; */
+    background: linear-gradient(to right, #232526, #414345);
+    color: #fff;
+    border-radius: 20px;
+}

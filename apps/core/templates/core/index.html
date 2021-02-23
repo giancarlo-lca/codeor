@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block menu %} 
+  {% include 'menu.html' %}
+{% endblock %}
+
+
+{% block content %}
+  <div class="home">
+      {% include 'pageTitle.html' with icon="fa fa-home" titulo="Bem Vindo!" subtitulo="Ao Sistema CODEOR - UFPB" %}
+  </div>   
+   
+{% endblock %}
