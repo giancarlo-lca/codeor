@@ -1,3 +1,5 @@
+{% load static %}
+
 <style>
     .main-sidebar{
         grid-area: menu;
@@ -70,7 +72,7 @@
 <aside class="menu main-sidebar" >
     <div class="panel-image">
         <div class="image">
-            <img src="http://www.pra.ufpb.br/controlerequisicoes/dist/img/LogoUFPB.png" class="rounded-circle" alt="User Image">
+            <img src="{% static 'images/LogoUFPB.png' %}" class="rounded-circle" alt="User Image">
         </div>
     </div>
 

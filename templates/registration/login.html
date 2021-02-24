@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
+{% load static %}
 
 {% block content %} 
     <div class="content">
     <div class="auth-content">
         <div class="auth-modal">
             <div class="logo-sistema">
-                <img src="https://security.ufpb.br/ccae/contents/imagens/logo-1.png/@@images/404ebd16-a7a4-4424-abd5-1bb73ad04ce3.png" alt=""
+                <img src="{% static 'images/logo_ufpb.png' %}" alt=""
                     style="width: 70px; height: auto;"> <span> CODEOR </span>
             </div>
             
